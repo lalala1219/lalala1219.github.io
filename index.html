@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>我的主页</title>
     <style>
-        /* 1. 梵高油画调色盘 & 基础设定 */
+
         :root {
             --vg-canvas: #050d1a;       
             --vg-cypress: #020611;      
@@ -215,4 +215,80 @@
         
         video {
             width: 100%; border-radius: 4px; margin-top: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 5px 15
+            border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 5px 15px rgba(0,0,0,0.5); background: #000;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <svg style="display: none;">
+        <defs>
+            <filter id="authentic-brushstrokes">
+                <feTurbulence type="fractalNoise" baseFrequency="0.03 0.005" numOctaves="4" result="noise" />
+                <feDisplacementMap in="SourceGraphic" in2="noise" scale="50" xChannelSelector="R" yChannelSelector="G" />
+            </filter>
+        </defs>
+    </svg>
+
+    <div class="painted-bg">
+        <div class="cypress-tree"></div>
+        <div class="main-swirl"></div>  
+        <div class="crescent-moon"></div>
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="poetry-quote">“击鼓之后，我们把在黑暗中跳舞的心脏叫作月亮。” —— 《亚洲铜》</div>
+        </header>
+
+        <div class="glass-card">
+            <h2>关于我</h2>
+            <ul class="about-list">
+                <li><strong>👤 姓名：</strong> 李佳伦 </li>
+                <li><strong>📍 出生地：</strong> 吉林省通化市</li>
+                <li><strong>🎓 教育背景：</strong> 北京大学 &nbsp;·&nbsp; 信息科学技术学院</li>
+                <li><strong>🎨 兴趣爱好：</strong> 阅读、摄影、诗歌、音乐、旅行、游戏、自然</li>
+                <li><strong>🎵 最近在听：</strong> <a href="https://www.youtube.com/watch?v=H-kA3UtBj4M" target="_blank" class="music-link">《What's Going On》 - Marvin Gaye 🎧</a></li>
+            </ul>
+        </div>
+
+        <div class="glass-card">
+            <h2>感兴趣的方向</h2>
+            <div class="tags-container">
+                <span class="tag">具身智能</span>
+                <span class="tag">vibe coding</span>
+                <span class="tag">ai艺术创作</span>
+            </div>
+        </div>
+
+        <div class="glass-card">
+            <h2>一些工作</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">2025.7 -- 2026.4</div>
+                    <h3 class="timeline-title">BeingBeyond & Whole-Body Control</h3>
+                    <div class="timeline-content">
+                        <p>Booster T1 滑板的真机部署</p>
+                        <video controls>
+                            <source src="demo.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-card">
+            <h2>联系方式</h2>
+            <p>期待你的联系：</p>
+            <ul>
+                <li>✦ 电子邮箱：<a href="mailto:ljjialun@stu.pku.edu.cn">ljjialun@stu.pku.edu.cn ✉️</a></li>
+                <li>✦ Github：<a href="https://github.com/lalala1219">@lalala1219 🐙</a></li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
