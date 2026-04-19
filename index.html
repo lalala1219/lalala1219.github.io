@@ -3,248 +3,277 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的艺术主页</title>
+    <title>我的星空主页</title>
     <style>
-        /* 1. 字体与基础色调设定 */
+        /* 1. 基础设定与深空底色 */
         :root {
-            --bg-color: #F7F5F0;       /* 温润的米白/宣纸色 */
-            --text-main: #2C3033;      /* 深水墨灰，比纯黑更柔和 */
-            --text-muted: #7A8185;     /* 浅灰，用于次要文字 */
-            --accent-color: #6B7B83;   /* 烟雨青灰色，用于强调色 */
+            --vg-dark-blue: #020b1c;    /* 极夜黑蓝 */
+            --vg-blue: #163866;         /* 经典星空蓝 */
+            --vg-light-blue: #3d72b4;   /* 旋转的群青 */
+            --vg-gold: #d4a348;         /* 星辰的暖金 */
+            --vg-yellow: #f8e182;       /* 星月的高光 */
+            --text-main: #f0f4f8;
+            --text-muted: #a0aec0;
         }
 
         body {
             margin: 0;
-            /* 正文使用清晰现代的无衬线字体 */
-            font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, sans-serif;
+            font-family: "Noto Serif SC", "Songti SC", "STSong", "PT Serif", serif; /* 全局使用充满诗意的衬线体 */
             color: var(--text-main);
-            background-color: var(--bg-color);
+            background-color: var(--vg-dark-blue);
             min-height: 100vh;
-            line-height: 1.9;
-            font-weight: 300;
+            line-height: 1.8;
             overflow-x: hidden;
         }
 
-        /* 2. 核心魔法：纸张肌理（SVG 噪点叠加） */
-        body::after {
-            content: "";
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            /* 利用 base64 编码的 SVG 生成极细微的噪点，模拟纸张质感 */
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-            opacity: 0.04; /* 极致微弱，只提供质感不影响阅读 */
-            pointer-events: none; /* 让鼠标可以穿透噪点层点击下方的链接 */
-            z-index: 999;
-        }
-
-        /* 3. 背景：水墨晕染特效 */
-        .ink-wash-container {
+        /* 2. 核心：CSS 绘制的旋转星空背景 */
+        .starry-night {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
             z-index: -1;
             overflow: hidden;
+            background: radial-gradient(circle at center, #06152d 0%, var(--vg-dark-blue) 100%);
         }
 
-        .ink {
+        /* 模拟梵高笔触的旋转气流 */
+        .swirl {
             position: absolute;
             border-radius: 50%;
-            filter: blur(100px); /* 极度模糊，模拟墨水在水中的扩散 */
-            animation: breathe 25s infinite alternate ease-in-out;
+            filter: blur(80px);
+            opacity: 0.7;
+            animation: swirlAnim 30s infinite linear;
         }
 
-        .ink-1 {
-            width: 60vw; height: 60vw;
-            background: rgba(107, 123, 131, 0.12); /* 青灰色 */
-            top: -20%; left: -10%;
+        .swirl-1 {
+            width: 70vw; height: 50vw;
+            background: var(--vg-blue);
+            top: -10%; left: -10%;
+            transform-origin: center right;
         }
 
-        .ink-2 {
-            width: 50vw; height: 50vw;
-            background: rgba(163, 153, 142, 0.1); /* 淡淡的茶褐色 */
-            bottom: -10%; right: -10%;
-            animation-delay: -7s;
+        .swirl-2 {
+            width: 60vw; height: 40vw;
+            background: var(--vg-light-blue);
+            bottom: -20%; right: -10%;
+            transform-origin: center left;
+            animation-direction: reverse;
+            animation-duration: 40s;
         }
 
-        .ink-3 {
-            width: 45vw; height: 45vw;
-            background: rgba(44, 48, 51, 0.06); /* 极浅的水墨黑 */
-            top: 30%; left: 40%;
-            animation-delay: -15s;
+        /* 发光的巨大星月 */
+        .moon-star {
+            position: absolute;
+            width: 25vw; height: 25vw;
+            background: radial-gradient(circle, var(--vg-yellow) 0%, var(--vg-gold) 30%, transparent 70%);
+            top: 5%; right: 5%;
+            filter: blur(30px);
+            animation: pulse 6s infinite alternate ease-in-out;
+            opacity: 0.85;
         }
 
-        @keyframes breathe {
-            0% { transform: scale(0.9) translate(0, 0); opacity: 0.6; }
-            100% { transform: scale(1.1) translate(5%, 5%); opacity: 1; }
+        /* 散落的小星光 */
+        .little-star {
+            position: absolute;
+            width: 4px; height: 4px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 15px 3px var(--vg-yellow);
+            animation: twinkle 4s infinite alternate;
+        }
+        .s1 { top: 20%; left: 15%; animation-delay: 0s; }
+        .s2 { top: 60%; left: 80%; animation-delay: 1s; }
+        .s3 { top: 40%; left: 60%; animation-delay: 2s; }
+        .s4 { top: 80%; left: 30%; animation-delay: 1.5s; }
+
+        @keyframes swirlAnim {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.2); }
+            100% { transform: rotate(360deg) scale(1); }
         }
 
-        /* 4. 容器与排版留白 */
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 0.7; }
+            100% { transform: scale(1.05); opacity: 1; }
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.2; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1.5); }
+        }
+
+        /* 3. 内容容器与排版 */
         .container {
-            max-width: 680px;
+            max-width: 650px;
             margin: 0 auto;
             padding: 100px 20px;
             position: relative;
             z-index: 1;
         }
 
-        /* 5. 标题：使用具有文化底蕴的衬线字体（宋体/明朝体） */
-        h1, h2 {
-            /* 优先调用系统自带的高级衬线字体 */
-            font-family: "Noto Serif SC", "Songti SC", "STSong", "PT Serif", serif;
-            font-weight: 400;
-            color: var(--text-main);
-        }
-
         header {
             margin-bottom: 70px;
-            animation: fadeUp 1.2s ease-out;
+            text-align: center;
+            animation: fadeUp 1.5s ease-out;
         }
 
         h1 {
-            font-size: 2.6em;
+            font-size: 3em;
+            letter-spacing: 4px;
+            margin-bottom: 15px;
+            text-shadow: 0 0 20px rgba(248, 225, 130, 0.3); /* 微微的金色辉光 */
+        }
+
+        .poetry-quote {
+            font-size: 1.1em;
+            color: var(--vg-gold);
             letter-spacing: 2px;
-            margin-bottom: 10px;
+            font-style: italic;
+            opacity: 0.9;
         }
 
-        .subtitle {
-            font-size: 1em;
-            color: var(--text-muted);
-            letter-spacing: 3px;
-            text-transform: uppercase;
-        }
-
-        /* 6. 轻盈的卡片设计 */
+        /* 4. 暗夜琉璃卡片（深色毛玻璃） */
         .glass-card {
-            background: rgba(255, 255, 255, 0.4); /* 半透明纯白 */
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            border-radius: 4px; /* 减小圆角，更显画框的硬朗利落 */
+            background: rgba(6, 21, 45, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(100, 149, 237, 0.15);
+            border-top: 1px solid rgba(248, 225, 130, 0.2); /* 顶部边缘有一丝金色反光 */
+            border-radius: 8px;
             padding: 40px;
-            margin-bottom: 40px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03); /* 极其轻柔的阴影 */
-            transition: transform 0.5s ease;
+            margin-bottom: 35px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            transition: transform 0.5s ease, border-color 0.5s ease;
             animation: fadeUp 1s ease-out backwards;
         }
 
         .glass-card:hover {
             transform: translateY(-3px);
+            border-top-color: rgba(248, 225, 130, 0.5); /* 悬浮时金边变亮 */
         }
 
-        .glass-card:nth-child(2) { animation-delay: 0.2s; }
-        .glass-card:nth-child(3) { animation-delay: 0.4s; }
-        .glass-card:nth-child(4) { animation-delay: 0.6s; }
-        .glass-card:nth-child(5) { animation-delay: 0.8s; }
+        /* 卡片入场延迟 */
+        .glass-card:nth-child(2) { animation-delay: 0.3s; }
+        .glass-card:nth-child(3) { animation-delay: 0.5s; }
+        .glass-card:nth-child(4) { animation-delay: 0.7s; }
+        .glass-card:nth-child(5) { animation-delay: 0.9s; }
 
         h2 {
-            font-size: 1.4em;
+            font-size: 1.3em;
+            color: var(--vg-yellow);
             margin-top: 0;
-            margin-bottom: 25px;
-            border-bottom: 1px solid rgba(0,0,0,0.08);
-            padding-bottom: 15px;
+            margin-bottom: 20px;
+            border-bottom: 1px dashed rgba(248, 225, 130, 0.2);
+            padding-bottom: 10px;
+            letter-spacing: 1px;
         }
 
-        /* 标签样式 */
+        p, ul {
+            font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif; /* 正文回归现代字体保证可读性 */
+            color: var(--text-muted);
+            font-size: 1.05em;
+            font-weight: 300;
+        }
+
+        /* 星芒标签（技能/兴趣） */
         .tags-container {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 12px;
         }
 
         .tag {
+            font-family: -apple-system, sans-serif;
             background: transparent;
-            border: 1px solid var(--accent-color);
-            color: var(--accent-color);
-            padding: 6px 16px;
-            border-radius: 20px;
+            border: 1px solid var(--vg-light-blue);
+            color: var(--text-main);
+            padding: 6px 15px;
+            border-radius: 4px;
             font-size: 0.85em;
-            letter-spacing: 1px;
             transition: all 0.4s ease;
+            box-shadow: 0 0 10px rgba(61, 114, 180, 0);
         }
 
         .tag:hover {
-            background: var(--accent-color);
+            background: var(--vg-light-blue);
+            border-color: var(--vg-gold);
             color: #fff;
+            box-shadow: 0 0 15px rgba(212, 163, 72, 0.4); /* 悬浮发金光 */
         }
 
-        /* 视频与链接 */
+        /* 视频与超链接 */
         video {
             width: 100%;
-            border-radius: 2px;
+            border-radius: 4px;
             margin-top: 15px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-            background: #f0f0f0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         a {
-            color: var(--accent-color);
+            color: var(--vg-gold);
             text-decoration: none;
-            border-bottom: 1px dashed var(--accent-color);
-            padding-bottom: 2px;
             transition: all 0.3s ease;
         }
 
         a:hover {
-            color: var(--text-main);
-            border-bottom: 1px solid var(--text-main);
+            color: var(--vg-yellow);
+            text-shadow: 0 0 8px rgba(248, 225, 130, 0.5);
         }
 
-        ul {
-            list-style: none;
-            padding-left: 0;
-        }
-
-        ul li {
-            margin-bottom: 12px;
-        }
+        ul { list-style-type: none; padding-left: 0; }
+        ul li { margin-bottom: 12px; }
 
         @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: translateY(20px); filter: blur(5px); }
+            to { opacity: 1; transform: translateY(0); filter: blur(0); }
         }
     </style>
 </head>
 <body>
-    <div class="ink-wash-container">
-        <div class="ink ink-1"></div>
-        <div class="ink ink-2"></div>
-        <div class="ink ink-3"></div>
+    <div class="starry-night">
+        <div class="swirl swirl-1"></div>
+        <div class="swirl swirl-2"></div>
+        <div class="moon-star"></div>
+        <div class="little-star s1"></div>
+        <div class="little-star s2"></div>
+        <div class="little-star s3"></div>
+        <div class="little-star s4"></div>
     </div>
 
     <div class="container">
         <header>
             <h1>[你的名字]</h1>
-            <div class="subtitle">Art & Code / 艺术与代码</div>
+            <div class="poetry-quote">“要有最朴素的生活，与最遥远的梦想。” —— 海子</div>
         </header>
 
         <div class="glass-card">
-            <h2>序言</h2>
-            <p>你好，我是[你的名字]。我相信数字世界也应具有诗意。我致力于在理性的代码中寻找感性的表达，用技术绘制具有美感与温度的交互体验。像打磨艺术品一样去构筑每一个项目，是我坚持的哲学。</p>
+            <h2>以梦为马 (关于我)</h2>
+            <p>和所有以梦为马的诗人一样，我选择将浪漫倾注于代码之中。我是一名开发者与创作者，试图在冰冷的机器逻辑里，寻找如星空般绚烂的视觉表达与交互体验。我仰望星空，也脚踏实地写下每一行代码。</p>
         </div>
 
         <div class="glass-card">
-            <h2>探索领域</h2>
+            <h2>星芒轨迹 (探索领域)</h2>
             <div class="tags-container">
-                <span class="tag">数字艺术</span>
-                <span class="tag">交互体验设计</span>
-                <span class="tag">前端工程</span>
-                <span class="tag">创意编程</span>
+                <span class="tag">生成艺术 (Generative Art)</span>
+                <span class="tag">前端交互设计</span>
+                <span class="tag">WebGL 渲染</span>
+                <span class="tag">浪漫主义编程</span>
             </div>
         </div>
 
         <div class="glass-card">
-            <h2>光影志</h2>
-            <p>以下是我近期的一个视觉尝试，借由屏幕传递一丝灵感：</p>
+            <h2>面朝大海 (作品 Demo)</h2>
+            <p>这是我近期构筑的一方小小世界，通过屏幕，与你分享我眼中的春暖花开：</p>
             <video controls>
                 <source src="demo.mp4" type="video/mp4">
             </video>
         </div>
 
         <div class="glass-card">
-            <h2>书信往来</h2>
-            <p>若有共鸣，或有有趣的合作意向，期待你的来信：</p>
+            <h2>宇宙回声 (联系方式)</h2>
+            <p>如果你也在这片夜空下，如果你也有遥远的梦想，期待收到你的信号：</p>
             <ul>
-                <li>信箱：<a href="mailto:your.email@example.com">your.email@example.com</a></li>
-                <li>工坊：<a href="https://github.com/你的用户名">@你的用户名 (GitHub)</a></li>
+                <li>✦ 电子信件：<a href="mailto:your.email@example.com">your.email@example.com</a></li>
+                <li>✦ 开源星系：<a href="https://github.com/你的用户名">@你的用户名 (GitHub)</a></li>
             </ul>
         </div>
     </div>
