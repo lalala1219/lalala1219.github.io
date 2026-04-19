@@ -3,257 +3,248 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的极简主页</title>
+    <title>我的艺术主页</title>
     <style>
-        /* 全局样式设定 */
+        /* 1. 字体与基础色调设定 */
+        :root {
+            --bg-color: #F7F5F0;       /* 温润的米白/宣纸色 */
+            --text-main: #2C3033;      /* 深水墨灰，比纯黑更柔和 */
+            --text-muted: #7A8185;     /* 浅灰，用于次要文字 */
+            --accent-color: #6B7B83;   /* 烟雨青灰色，用于强调色 */
+        }
+
         body {
             margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
-            color: #f8fafc;
-            background-color: #020617; /* 极深的暗蓝色底色 */
+            /* 正文使用清晰现代的无衬线字体 */
+            font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, sans-serif;
+            color: var(--text-main);
+            background-color: var(--bg-color);
             min-height: 100vh;
-            line-height: 1.8;
+            line-height: 1.9;
             font-weight: 300;
-            overflow-x: hidden; /* 防止光球动画产生横向滚动条 */
+            overflow-x: hidden;
         }
 
-        /* --- 核心：流动背景元素 --- */
-        .bg-flowing {
+        /* 2. 核心魔法：纸张肌理（SVG 噪点叠加） */
+        body::after {
+            content: "";
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: -1; /* 确保在最底层 */
-            overflow: hidden;
-            pointer-events: none; /* 鼠标事件穿透，不影响上方内容点击 */
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            /* 利用 base64 编码的 SVG 生成极细微的噪点，模拟纸张质感 */
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.04; /* 极致微弱，只提供质感不影响阅读 */
+            pointer-events: none; /* 让鼠标可以穿透噪点层点击下方的链接 */
+            z-index: 999;
         }
 
-        .orb {
+        /* 3. 背景：水墨晕染特效 */
+        .ink-wash-container {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .ink {
             position: absolute;
             border-radius: 50%;
-            filter: blur(100px); /* 极强的模糊，形成光晕效果 */
-            opacity: 0.5;
-            animation: float 20s infinite ease-in-out alternate;
+            filter: blur(100px); /* 极度模糊，模拟墨水在水中的扩散 */
+            animation: breathe 25s infinite alternate ease-in-out;
         }
 
-        /* 蓝色光球 */
-        .orb-1 {
-            width: 50vw;
-            height: 50vw;
-            background: #38bdf8;
-            top: -10%;
-            left: -10%;
-            animation-duration: 25s;
+        .ink-1 {
+            width: 60vw; height: 60vw;
+            background: rgba(107, 123, 131, 0.12); /* 青灰色 */
+            top: -20%; left: -10%;
         }
 
-        /* 紫色光球 */
-        .orb-2 {
-            width: 40vw;
-            height: 40vw;
-            background: #818cf8;
-            bottom: -10%;
-            right: -10%;
-            animation-duration: 30s;
-            animation-delay: -5s;
+        .ink-2 {
+            width: 50vw; height: 50vw;
+            background: rgba(163, 153, 142, 0.1); /* 淡淡的茶褐色 */
+            bottom: -10%; right: -10%;
+            animation-delay: -7s;
         }
 
-        /* 粉青色光球 */
-        .orb-3 {
-            width: 35vw;
-            height: 35vw;
-            background: #2dd4bf;
-            top: 40%;
-            left: 30%;
-            animation-duration: 35s;
+        .ink-3 {
+            width: 45vw; height: 45vw;
+            background: rgba(44, 48, 51, 0.06); /* 极浅的水墨黑 */
+            top: 30%; left: 40%;
             animation-delay: -15s;
-            opacity: 0.3;
         }
 
-        /* 光球缓慢漂浮的动画 */
-        @keyframes float {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(10%, 10%) scale(1.2); }
+        @keyframes breathe {
+            0% { transform: scale(0.9) translate(0, 0); opacity: 0.6; }
+            100% { transform: scale(1.1) translate(5%, 5%); opacity: 1; }
         }
-        /* ------------------------- */
 
-        /* 主体内容容器 */
+        /* 4. 容器与排版留白 */
         .container {
-            max-width: 760px;
+            max-width: 680px;
             margin: 0 auto;
-            padding: 80px 20px;
-            position: relative; /* 确保内容在光球上方 */
+            padding: 100px 20px;
+            position: relative;
             z-index: 1;
         }
 
-        /* 极简头部 */
+        /* 5. 标题：使用具有文化底蕴的衬线字体（宋体/明朝体） */
+        h1, h2 {
+            /* 优先调用系统自带的高级衬线字体 */
+            font-family: "Noto Serif SC", "Songti SC", "STSong", "PT Serif", serif;
+            font-weight: 400;
+            color: var(--text-main);
+        }
+
         header {
-            margin-bottom: 60px;
-            animation: fadeUp 1s ease-out;
+            margin-bottom: 70px;
+            animation: fadeUp 1.2s ease-out;
         }
 
         h1 {
-            font-size: 3em;
-            font-weight: 600;
-            letter-spacing: 1px;
-            margin-bottom: 5px;
-            color: #ffffff;
+            font-size: 2.6em;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
         }
 
         .subtitle {
-            font-size: 1.1em;
-            color: #94a3b8;
-            letter-spacing: 1px;
+            font-size: 1em;
+            color: var(--text-muted);
+            letter-spacing: 3px;
+            text-transform: uppercase;
         }
 
-        /* 毛玻璃质感卡片 */
+        /* 6. 轻盈的卡片设计 */
         .glass-card {
-            background: rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
-            padding: 35px 40px;
-            margin-bottom: 30px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-            transition: transform 0.4s ease, background 0.4s ease;
+            background: rgba(255, 255, 255, 0.4); /* 半透明纯白 */
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 4px; /* 减小圆角，更显画框的硬朗利落 */
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03); /* 极其轻柔的阴影 */
+            transition: transform 0.5s ease;
             animation: fadeUp 1s ease-out backwards;
         }
 
         .glass-card:hover {
-            transform: translateY(-5px);
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.12);
+            transform: translateY(-3px);
         }
 
-        /* 卡片入场动画延迟，制造层次感 */
-        .glass-card:nth-child(2) { animation-delay: 0.1s; }
-        .glass-card:nth-child(3) { animation-delay: 0.2s; }
-        .glass-card:nth-child(4) { animation-delay: 0.3s; }
-        .glass-card:nth-child(5) { animation-delay: 0.4s; }
+        .glass-card:nth-child(2) { animation-delay: 0.2s; }
+        .glass-card:nth-child(3) { animation-delay: 0.4s; }
+        .glass-card:nth-child(4) { animation-delay: 0.6s; }
+        .glass-card:nth-child(5) { animation-delay: 0.8s; }
 
         h2 {
-            font-size: 1.3em;
-            font-weight: 500;
+            font-size: 1.4em;
             margin-top: 0;
-            margin-bottom: 20px;
-            color: #f1f5f9;
-            display: flex;
-            align-items: center;
+            margin-bottom: 25px;
+            border-bottom: 1px solid rgba(0,0,0,0.08);
+            padding-bottom: 15px;
         }
 
-        p {
-            color: #cbd5e1;
-            font-size: 1.05em;
-        }
-
-        /* 标签样式（用于感兴趣的方向） */
+        /* 标签样式 */
         .tags-container {
             display: flex;
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 10px;
         }
 
         .tag {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #e2e8f0;
-            padding: 8px 18px;
-            border-radius: 8px; /* 稍微方正一点的圆角，更现代 */
-            font-size: 0.95em;
-            transition: all 0.3s ease;
+            background: transparent;
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            letter-spacing: 1px;
+            transition: all 0.4s ease;
         }
 
         .tag:hover {
-            background: rgba(56, 189, 248, 0.15);
-            border-color: rgba(56, 189, 248, 0.4);
-            color: #38bdf8;
-            transform: translateY(-2px);
+            background: var(--accent-color);
+            color: #fff;
         }
 
-        /* 视频与链接样式 */
+        /* 视频与链接 */
         video {
             width: 100%;
-            border-radius: 12px;
-            margin-top: 10px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-            background: #000;
-            outline: none;
+            border-radius: 2px;
+            margin-top: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            background: #f0f0f0;
         }
 
         a {
-            color: #38bdf8;
+            color: var(--accent-color);
             text-decoration: none;
-            transition: color 0.3s ease;
+            border-bottom: 1px dashed var(--accent-color);
+            padding-bottom: 2px;
+            transition: all 0.3s ease;
         }
 
         a:hover {
-            color: #7dd3fc;
-            text-decoration: underline;
+            color: var(--text-main);
+            border-bottom: 1px solid var(--text-main);
         }
 
         ul {
             list-style: none;
             padding-left: 0;
-            color: #cbd5e1;
-            font-size: 1.05em;
         }
 
         ul li {
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
-        /* 入场动画定义 */
         @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
-    <div class="bg-flowing">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-        <div class="orb orb-3"></div>
+    <div class="ink-wash-container">
+        <div class="ink ink-1"></div>
+        <div class="ink ink-2"></div>
+        <div class="ink ink-3"></div>
     </div>
 
     <div class="container">
         <header>
             <h1>[你的名字]</h1>
-            <div class="subtitle">欢迎来到我的数字空间 ✨</div>
+            <div class="subtitle">Art & Code / 艺术与代码</div>
         </header>
 
         <div class="glass-card">
-            <h2>个人介绍</h2>
-            <p>你好！我是一名热爱探索与创造的开发者。我享受将天马行空的想法转化为优雅的代码与直观的视觉体验。在技术与设计的交界处寻找平衡，是我始终追求的目标。我相信，好的作品不仅需要严谨的逻辑，更需要对美的感知。</p>
+            <h2>序言</h2>
+            <p>你好，我是[你的名字]。我相信数字世界也应具有诗意。我致力于在理性的代码中寻找感性的表达，用技术绘制具有美感与温度的交互体验。像打磨艺术品一样去构筑每一个项目，是我坚持的哲学。</p>
         </div>
 
         <div class="glass-card">
-            <h2>感兴趣的方向</h2>
+            <h2>探索领域</h2>
             <div class="tags-container">
-                <span class="tag">人机交互 (HCI)</span>
-                <span class="tag">前端工程化</span>
-                <span class="tag">创意编程 (Creative Coding)</span>
-                <span class="tag">UI/UX 设计</span>
-                <span class="tag">人工智能应用</span>
+                <span class="tag">数字艺术</span>
+                <span class="tag">交互体验设计</span>
+                <span class="tag">前端工程</span>
+                <span class="tag">创意编程</span>
             </div>
         </div>
 
         <div class="glass-card">
-            <h2>作品 Demo</h2>
-            <p>这是我近期制作的一个交互/视觉 Demo，通过它你能最直观地感受到我的审美与代码实现能力：</p>
+            <h2>光影志</h2>
+            <p>以下是我近期的一个视觉尝试，借由屏幕传递一丝灵感：</p>
             <video controls>
                 <source src="demo.mp4" type="video/mp4">
             </video>
         </div>
 
         <div class="glass-card">
-            <h2>联系方式</h2>
-            <p>如果你对我的作品感兴趣，或者有任何有趣的想法想要交流，随时欢迎联系我：</p>
+            <h2>书信往来</h2>
+            <p>若有共鸣，或有有趣的合作意向，期待你的来信：</p>
             <ul>
-                <li>📫 Email: <a href="mailto:your.email@example.com">your.email@example.com</a></li>
-                <li>🐙 GitHub: <a href="https://github.com/你的用户名">@你的用户名</a></li>
-                <li>🐦 Twitter / X: <a href="#">@你的账号</a> (可选填写)</li>
+                <li>信箱：<a href="mailto:your.email@example.com">your.email@example.com</a></li>
+                <li>工坊：<a href="https://github.com/你的用户名">@你的用户名 (GitHub)</a></li>
             </ul>
         </div>
     </div>
