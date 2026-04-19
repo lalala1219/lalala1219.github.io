@@ -3,178 +3,183 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的星空主页</title>
+    <title>我的星空主页 - 油画质感版</title>
     <style>
-        /* 1. 基础设定与深空底色 */
+        /* 1. 梵高油画调色盘 */
         :root {
-            --vg-dark-blue: #020b1c;    /* 极夜黑蓝 */
-            --vg-blue: #163866;         /* 经典星空蓝 */
-            --vg-light-blue: #3d72b4;   /* 旋转的群青 */
-            --vg-gold: #d4a348;         /* 星辰的暖金 */
-            --vg-yellow: #f8e182;       /* 星月的高光 */
+            --vg-canvas: #09172b;       /* 深邃的底布色 */
+            --vg-ultramarine: #123568;  /* 群青 */
+            --vg-cobalt: #2a5caa;       /* 钴蓝 */
+            --vg-cyan: #5a8ab8;         /* 略带灰的浅蓝 */
+            --vg-ochre: #c49a45;        /* 土黄 */
+            --vg-cadmium: #e8c858;      /* 镉黄（明亮） */
             --text-main: #f0f4f8;
             --text-muted: #a0aec0;
         }
 
         body {
             margin: 0;
-            font-family: "Noto Serif SC", "Songti SC", "STSong", "PT Serif", serif; /* 全局使用充满诗意的衬线体 */
+            font-family: "Noto Serif SC", "Songti SC", "STSong", "PT Serif", serif;
             color: var(--text-main);
-            background-color: var(--vg-dark-blue);
+            background-color: var(--vg-canvas);
             min-height: 100vh;
             line-height: 1.8;
             overflow-x: hidden;
         }
 
-        /* 2. 核心：CSS 绘制的旋转星空背景 */
-        .starry-night {
+        /* 2. 油画画布肌理（全局覆盖） */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            /* 利用高频 SVG 噪点生成粗糙的画布和笔触颗粒感 */
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.15;
+            mix-blend-mode: color-burn; /* 让噪点深深吃进底色里，形成厚涂感 */
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        /* 3. 动态画笔图层容器 */
+        .painted-bg {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
             z-index: -1;
+            /* 重点：调用底部定义的 SVG 画笔扭曲滤镜 */
+            filter: url(#brushstroke-distortion);
             overflow: hidden;
-            background: radial-gradient(circle at center, #06152d 0%, var(--vg-dark-blue) 100%);
         }
 
-        /* 模拟梵高笔触的旋转气流 */
-        .swirl {
+        /* 模拟粗犷的笔刷色块 */
+        .brush-stroke {
             position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.7;
-            animation: swirlAnim 30s infinite linear;
+            /* 使用不对称的 border-radius 制造有机的不规则形状 */
+            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+            opacity: 0.9;
         }
 
-        .swirl-1 {
+        /* 星空暗流 1 */
+        .stroke-1 {
+            width: 80vw; height: 60vw;
+            background: var(--vg-ultramarine);
+            top: -20%; left: -10%;
+            animation: swirlRotate 40s infinite linear;
+        }
+
+        /* 星空明流 2 */
+        .stroke-2 {
             width: 70vw; height: 50vw;
-            background: var(--vg-blue);
-            top: -10%; left: -10%;
-            transform-origin: center right;
+            background: var(--vg-cobalt);
+            top: -10%; right: -20%;
+            animation: swirlRotate 35s infinite linear reverse;
+            transform-origin: 30% 70%;
         }
 
-        .swirl-2 {
-            width: 60vw; height: 40vw;
-            background: var(--vg-light-blue);
-            bottom: -20%; right: -10%;
-            transform-origin: center left;
-            animation-direction: reverse;
-            animation-duration: 40s;
+        /* 风的流线 3 */
+        .stroke-3 {
+            width: 60vw; height: 20vw;
+            background: var(--vg-cyan);
+            bottom: 20%; left: 10%;
+            border-radius: 80% 20% 70% 30% / 40% 60% 40% 60%;
+            animation: flowX 25s infinite alternate ease-in-out;
+            opacity: 0.7;
         }
 
-        /* 发光的巨大星月 */
-        .moon-star {
+        /* 巨大的星星/月亮 */
+        .star-moon {
             position: absolute;
-            width: 25vw; height: 25vw;
-            background: radial-gradient(circle, var(--vg-yellow) 0%, var(--vg-gold) 30%, transparent 70%);
-            top: 5%; right: 5%;
-            filter: blur(30px);
-            animation: pulse 6s infinite alternate ease-in-out;
-            opacity: 0.85;
-        }
-
-        /* 散落的小星光 */
-        .little-star {
-            position: absolute;
-            width: 4px; height: 4px;
-            background: #fff;
+            width: 20vw; height: 20vw;
+            background: var(--vg-cadmium);
+            top: 10%; right: 10%;
             border-radius: 50%;
-            box-shadow: 0 0 15px 3px var(--vg-yellow);
-            animation: twinkle 4s infinite alternate;
+            /* 用多层阴影模拟颜料向外扩散的笔触 */
+            box-shadow: 
+                0 0 0 20px rgba(196, 154, 69, 0.4),
+                0 0 0 40px rgba(196, 154, 69, 0.2),
+                0 0 0 60px rgba(42, 92, 170, 0.3);
+            animation: pulsePaint 8s infinite alternate;
         }
-        .s1 { top: 20%; left: 15%; animation-delay: 0s; }
-        .s2 { top: 60%; left: 80%; animation-delay: 1s; }
-        .s3 { top: 40%; left: 60%; animation-delay: 2s; }
-        .s4 { top: 80%; left: 30%; animation-delay: 1.5s; }
 
-        @keyframes swirlAnim {
+        @keyframes swirlRotate {
             0% { transform: rotate(0deg) scale(1); }
-            50% { transform: rotate(180deg) scale(1.2); }
+            50% { transform: rotate(180deg) scale(1.1); }
             100% { transform: rotate(360deg) scale(1); }
         }
 
-        @keyframes pulse {
-            0% { transform: scale(0.95); opacity: 0.7; }
+        @keyframes flowX {
+            0% { transform: translateX(-10%) rotate(-5deg); }
+            100% { transform: translateX(10%) rotate(5deg); }
+        }
+
+        @keyframes pulsePaint {
+            0% { transform: scale(0.95); opacity: 0.9; }
             100% { transform: scale(1.05); opacity: 1; }
         }
 
-        @keyframes twinkle {
-            0% { opacity: 0.2; transform: scale(0.8); }
-            100% { opacity: 1; transform: scale(1.5); }
-        }
-
-        /* 3. 内容容器与排版 */
+        /* 4. 内容排版与卡片 */
         .container {
             max-width: 650px;
             margin: 0 auto;
             padding: 100px 20px;
             position: relative;
-            z-index: 1;
+            z-index: 100; /* 确保内容在画布之上 */
         }
 
         header {
             margin-bottom: 70px;
             text-align: center;
-            animation: fadeUp 1.5s ease-out;
+            animation: fadeUp 1s ease-out;
         }
 
         h1 {
-            font-size: 3em;
-            letter-spacing: 4px;
-            margin-bottom: 15px;
-            text-shadow: 0 0 20px rgba(248, 225, 130, 0.3); /* 微微的金色辉光 */
+            font-size: 3.2em;
+            letter-spacing: 5px;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5); /* 增加厚重感 */
         }
 
         .poetry-quote {
             font-size: 1.1em;
-            color: var(--vg-gold);
+            color: var(--vg-cadmium);
             letter-spacing: 2px;
             font-style: italic;
-            opacity: 0.9;
         }
 
-        /* 4. 暗夜琉璃卡片（深色毛玻璃） */
+        /* 画框质感的半透明卡片 */
         .glass-card {
-            background: rgba(6, 21, 45, 0.4);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(100, 149, 237, 0.15);
-            border-top: 1px solid rgba(248, 225, 130, 0.2); /* 顶部边缘有一丝金色反光 */
-            border-radius: 8px;
+            background: rgba(9, 23, 43, 0.65);
+            backdrop-filter: blur(10px); /* 轻微模糊，保持可读性 */
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(90, 138, 184, 0.2);
+            border-left: 3px solid var(--vg-ochre); /* 画布镶边感 */
+            border-radius: 2px; /* 极小的圆角，更像真实的画框 */
             padding: 40px;
             margin-bottom: 35px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
-            transition: transform 0.5s ease, border-color 0.5s ease;
+            box-shadow: 5px 10px 30px rgba(0, 0, 0, 0.5);
             animation: fadeUp 1s ease-out backwards;
         }
 
-        .glass-card:hover {
-            transform: translateY(-3px);
-            border-top-color: rgba(248, 225, 130, 0.5); /* 悬浮时金边变亮 */
-        }
-
-        /* 卡片入场延迟 */
-        .glass-card:nth-child(2) { animation-delay: 0.3s; }
-        .glass-card:nth-child(3) { animation-delay: 0.5s; }
-        .glass-card:nth-child(4) { animation-delay: 0.7s; }
-        .glass-card:nth-child(5) { animation-delay: 0.9s; }
+        .glass-card:nth-child(2) { animation-delay: 0.2s; }
+        .glass-card:nth-child(3) { animation-delay: 0.4s; }
+        .glass-card:nth-child(4) { animation-delay: 0.6s; }
+        .glass-card:nth-child(5) { animation-delay: 0.8s; }
 
         h2 {
-            font-size: 1.3em;
-            color: var(--vg-yellow);
+            font-size: 1.4em;
+            color: var(--vg-cadmium);
             margin-top: 0;
             margin-bottom: 20px;
-            border-bottom: 1px dashed rgba(248, 225, 130, 0.2);
             padding-bottom: 10px;
-            letter-spacing: 1px;
+            border-bottom: 1px solid rgba(196, 154, 69, 0.3);
         }
 
         p, ul {
-            font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif; /* 正文回归现代字体保证可读性 */
-            color: var(--text-muted);
+            font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+            color: #d1d5db;
             font-size: 1.05em;
             font-weight: 300;
         }
 
-        /* 星芒标签（技能/兴趣） */
         .tags-container {
             display: flex;
             flex-wrap: wrap;
@@ -183,60 +188,65 @@
 
         .tag {
             font-family: -apple-system, sans-serif;
-            background: transparent;
-            border: 1px solid var(--vg-light-blue);
-            color: var(--text-main);
+            background: rgba(42, 92, 170, 0.2);
+            border: 1px solid var(--vg-cyan);
+            color: #fff;
             padding: 6px 15px;
-            border-radius: 4px;
+            border-radius: 2px;
             font-size: 0.85em;
-            transition: all 0.4s ease;
-            box-shadow: 0 0 10px rgba(61, 114, 180, 0);
+            transition: all 0.3s ease;
         }
 
         .tag:hover {
-            background: var(--vg-light-blue);
-            border-color: var(--vg-gold);
-            color: #fff;
-            box-shadow: 0 0 15px rgba(212, 163, 72, 0.4); /* 悬浮发金光 */
+            background: var(--vg-ochre);
+            border-color: var(--vg-cadmium);
+            color: #000; /* 悬浮时反色，像刮刀刮出的痕迹 */
         }
 
-        /* 视频与超链接 */
         video {
             width: 100%;
-            border-radius: 4px;
+            border-radius: 2px;
             margin-top: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
         }
 
         a {
-            color: var(--vg-gold);
+            color: var(--vg-cadmium);
             text-decoration: none;
+            border-bottom: 1px dotted var(--vg-ochre);
             transition: all 0.3s ease;
         }
 
         a:hover {
-            color: var(--vg-yellow);
-            text-shadow: 0 0 8px rgba(248, 225, 130, 0.5);
+            color: #fff;
+            border-bottom-color: #fff;
         }
 
         ul { list-style-type: none; padding-left: 0; }
         ul li { margin-bottom: 12px; }
 
         @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(20px); filter: blur(5px); }
-            to { opacity: 1; transform: translateY(0); filter: blur(0); }
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
-    <div class="starry-night">
-        <div class="swirl swirl-1"></div>
-        <div class="swirl swirl-2"></div>
-        <div class="moon-star"></div>
-        <div class="little-star s1"></div>
-        <div class="little-star s2"></div>
-        <div class="little-star s3"></div>
-        <div class="little-star s4"></div>
+    <svg style="display: none;">
+        <defs>
+            <filter id="brushstroke-distortion">
+                <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="3" result="noise" />
+                <feDisplacementMap in="SourceGraphic" in2="noise" scale="40" xChannelSelector="R" yChannelSelector="G" />
+            </filter>
+        </defs>
+    </svg>
+
+    <div class="painted-bg">
+        <div class="brush-stroke stroke-1"></div>
+        <div class="brush-stroke stroke-2"></div>
+        <div class="brush-stroke stroke-3"></div>
+        <div class="star-moon"></div>
     </div>
 
     <div class="container">
@@ -270,12 +280,4 @@
 
         <div class="glass-card">
             <h2>宇宙回声 (联系方式)</h2>
-            <p>如果你也在这片夜空下，如果你也有遥远的梦想，期待收到你的信号：</p>
-            <ul>
-                <li>✦ 电子信件：<a href="mailto:your.email@example.com">your.email@example.com</a></li>
-                <li>✦ 开源星系：<a href="https://github.com/你的用户名">@你的用户名 (GitHub)</a></li>
-            </ul>
-        </div>
-    </div>
-</body>
-</html>
+            <p>如果你也在这片夜空下，如果你也有遥远的
