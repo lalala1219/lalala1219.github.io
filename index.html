@@ -155,4 +155,141 @@
         a { color: var(--vg-yellow); text-decoration: none; border-bottom: 1px dotted var(--vg-yellow); transition: all 0.3s ease; }
         a:hover { color: #fff; border-bottom-color: #fff; }
 
-        /* 4. 全
+        /* 4. 全新模块：阶段性历程 (Timeline) */
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+            /* 时间轴的主线 */
+            border-left: 2px solid rgba(85, 136, 181, 0.3); 
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 40px;
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+
+        /* 时间轴上的发光节点 */
+        .timeline-item::before {
+            content: "";
+            position: absolute;
+            left: -37px; /* 调整圆点位置贴合主线 */
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            background: var(--vg-canvas);
+            border: 2px solid var(--vg-yellow);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--vg-yellow);
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item:hover::before {
+            background: var(--vg-yellow);
+            transform: scale(1.2);
+        }
+
+        .timeline-date {
+            font-family: "Noto Serif SC", serif;
+            color: var(--vg-yellow);
+            font-size: 0.9em;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            opacity: 0.9;
+        }
+
+        .timeline-title {
+            color: #fff;
+            font-size: 1.2em;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        video {
+            width: 100%;
+            border-radius: 4px;
+            margin-top: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            background: #000;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <svg style="display: none;">
+        <defs>
+            <filter id="authentic-brushstrokes">
+                <feTurbulence type="fractalNoise" baseFrequency="0.03 0.005" numOctaves="4" result="noise" />
+                <feDisplacementMap in="SourceGraphic" in2="noise" scale="50" xChannelSelector="R" yChannelSelector="G" />
+            </filter>
+        </defs>
+    </svg>
+
+    <div class="painted-bg">
+        <div class="cypress-tree"></div> <div class="main-swirl"></div>   <div class="crescent-moon"></div></div>
+
+    <div class="container">
+        <header>
+            <h1>[你的名字]</h1>
+            <div class="poetry-quote">“要有最朴素的生活，与最遥远的梦想。” —— 海子</div>
+        </header>
+
+        <div class="glass-card">
+            <h2>以梦为马 (关于我)</h2>
+            <p>和所有以梦为马的诗人一样，我选择将浪漫倾注于代码之中。试图在冰冷的机器逻辑里，寻找如星空般绚烂的视觉表达与交互体验。我仰望星空，也脚踏实地写下每一行代码。</p>
+        </div>
+
+        <div class="glass-card">
+            <h2>星芒轨迹 (探索领域)</h2>
+            <div class="tags-container">
+                <span class="tag">生成艺术 (Generative Art)</span>
+                <span class="tag">前端交互设计</span>
+                <span class="tag">探索性编程</span>
+            </div>
+        </div>
+
+        <div class="glass-card">
+            <h2>岁月回眸 (历程纪实)</h2>
+            <div class="timeline">
+                
+                <div class="timeline-item">
+                    <div class="timeline-date">2026年4月19日</div>
+                    <h3 class="timeline-title">第一缕星光：视觉交互初探</h3>
+                    <div class="timeline-content">
+                        <p>完成首个个人主页并录制了核心视觉演示 Demo。这不仅是技术的实践，更是将美学融入代码的第一次成功尝试。</p>
+                        <video controls>
+                            <source src="demo.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-date">2026年3月</div>
+                    <h3 class="timeline-title">播种梦想的种子</h3>
+                    <div class="timeline-content">
+                        <p>明确了数字艺术与交互开发的方向，开始系统性梳理技术栈与设计灵感。</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="glass-card">
+            <h2>宇宙回声 (联系方式)</h2>
+            <p>如果你也在这片夜空下，如果你也有遥远的梦想，期待收到你的信号：</p>
+            <ul>
+                <li>✦ 电子信件：<a href="mailto:your.email@example.com">your.email@example.com</a></li>
+                <li>✦ 开源星系：<a href="https://github.com/你的用户名">@你的用户名 (GitHub)</a></li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
