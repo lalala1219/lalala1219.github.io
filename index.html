@@ -1,25 +1,147 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>我的个人主页</title>
     <style>
-        body { font-family: sans-serif; line-height: 1.6; max-width: 800px; margin: 40px auto; padding: 0 10px; color: #333; }
-        h1 { color: #2c3e50; border-bottom: 2px solid #eee; }
-        .tag { background: #e1f5fe; color: #01579b; padding: 2px 8px; border-radius: 4px; font-size: 0.9em; }
+        /* 这里是 CSS 样式，负责让网页变得炫酷 */
+        :root {
+            --bg-color: #0f172a;       /* 整体深蓝色背景 */
+            --text-color: #f8fafc;     /* 主文字颜色（亮白） */
+            --accent-color: #38bdf8;   /* 强调色（亮蓝），用于标题和链接 */
+            --card-bg: #1e293b;        /* 卡片背景色 */
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+        
+        /* 页面主体容器，居中显示 */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        /* 顶部欢迎区域，带渐显动画 */
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: fadeIn 1.5s ease-out;
+        }
+        
+        h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            color: var(--accent-color);
+        }
+        
+        p.subtitle {
+            font-size: 1.2em;
+            color: #94a3b8;
+        }
+        
+        /* 内容区块（卡片样式） */
+        .section {
+            margin-bottom: 40px;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        /* 鼠标悬浮在卡片上的弹起特效 */
+        .section:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 25px rgba(56, 189, 248, 0.2);
+        }
+        
+        h2 {
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+            margin-top: 0;
+            display: inline-block;
+        }
+        
+        /* 技能标签容器 */
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 15px;
+        }
+        
+        /* 单个技能标签样式 */
+        .skill-tag {
+            background: #334155;
+            color: var(--accent-color);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+        
+        .skill-tag:hover {
+            background: #475569;
+        }
+        
+        a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        a:hover {
+            color: #7dd3fc;
+            text-decoration: underline;
+        }
+        
+        /* 定义入场动画 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
-    <h1>你好，我是 [你的名字] 👋</h1>
-    <p>欢迎来到我的 GitHub Pages 空间！</p>
-    
-    <h3>🚀 研究方向</h3>
-    <ul>
-        <li>人工智能 & 机器学习 <span class="tag">AI</span></li>
-        <li>具身智能与机器人仿真 <span class="tag">Robotics</span></li>
-    </ul>
+    <div class="container">
+        <header>
+            <h1>你好，我是 [你的名字] 👋</h1>
+            <p class="subtitle">前端开发者 / 设计爱好者 / 终身学习者</p>
+        </header>
 
-    <h3>🛠 项目展示</h3>
-    <p>在这里可以链接到你的重要项目仓库...</p>
+        <div class="section">
+            <h2>🚀 关于我</h2>
+            <p>欢迎来到我的数字宇宙！我是一名热爱编程的开发者，致力于构建美观、高效且有意思的产品。我相信代码不仅是逻辑，也是一种表达创造力的艺术。</p>
+        </div>
+
+        <div class="section">
+            <h2>💻 我的技术栈</h2>
+            <div class="skills">
+                <span class="skill-tag">HTML5 & CSS3</span>
+                <span class="skill-tag">JavaScript</span>
+                <span class="skill-tag">Python</span>
+                <span class="skill-tag">Git & GitHub</span>
+                <span class="skill-tag">UI/UX 设计</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📫 联系我</h2>
+            <p>如果你有任何有趣的想法，或者想一起讨论技术，欢迎通过以下方式联系我：</p>
+            <ul>
+                <li>Email: <a href="mailto:your.email@example.com">your.email@example.com</a></li>
+                <li>GitHub: <a href="https://github.com/你的用户名">@你的用户名</a></li>
+            </ul>
+        </div>
+    </div>
 </body>
 </html>
