@@ -3,110 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的个人主页</title>
+    <title>我的极简主页</title>
     <style>
-        /* 这里是 CSS 样式，负责让网页变得炫酷 */
-        :root {
-            --bg-color: #0f172a;       /* 整体深蓝色背景 */
-            --text-color: #f8fafc;     /* 主文字颜色（亮白） */
-            --accent-color: #38bdf8;   /* 强调色（亮蓝），用于标题和链接 */
-            --card-bg: #1e293b;        /* 卡片背景色 */
-        }
-        
+        /* 1. 全局重置与流光背景 */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
             margin: 0;
-            padding: 0;
-            line-height: 1.6;
+            font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
+            color: #ffffff;
+            /* 柔和的高级深色流光渐变 */
+            background: linear-gradient(-45deg, #0f172a, #1e1b4b, #111827, #172554);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            min-height: 100vh;
+            line-height: 1.8;
+            font-weight: 300;
         }
-        
-        /* 页面主体容器，居中显示 */
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* 2. 居中容器，增加宽裕的留白 */
         .container {
-            max-width: 800px;
+            max-width: 720px;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 80px 20px;
         }
-        
-        /* 顶部欢迎区域，带渐显动画 */
+
+        /* 3. 极简头部 */
         header {
-            text-align: center;
-            margin-bottom: 50px;
-            animation: fadeIn 1.5s ease-out;
+            margin-bottom: 60px;
+            animation: fadeUp 1s ease-out;
         }
-        
+
         h1 {
-            font-size: 3em;
-            margin-bottom: 10px;
-            color: var(--accent-color);
+            font-size: 2.8em;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        
-        p.subtitle {
-            font-size: 1.2em;
+
+        .subtitle {
+            font-size: 1.1em;
             color: #94a3b8;
+            letter-spacing: 2px;
         }
-        
-        /* 内容区块（卡片样式） */
-        .section {
+
+        /* 4. 核心：毛玻璃质感卡片（Glassmorphism） */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03); /* 极弱的白色背景 */
+            backdrop-filter: blur(16px);           /* 背景模糊效果 */
+            -webkit-backdrop-filter: blur(16px);   /* 兼容苹果设备 */
+            border: 1px solid rgba(255, 255, 255, 0.08); /* 若隐若现的边线 */
+            border-radius: 24px;
+            padding: 40px;
             margin-bottom: 40px;
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.4s ease, background 0.4s ease;
+            animation: fadeUp 1s ease-out backwards;
         }
-        
-        /* 鼠标悬浮在卡片上的弹起特效 */
-        .section:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 8px 25px rgba(56, 189, 248, 0.2);
+
+        .glass-card:hover {
+            transform: translateY(-4px);
+            background: rgba(255, 255, 255, 0.05);
         }
-        
+
+        /* 给不同卡片设置动画延迟，实现顺滑入场 */
+        .glass-card:nth-child(2) { animation-delay: 0.2s; }
+        .glass-card:nth-child(3) { animation-delay: 0.4s; }
+        .glass-card:nth-child(4) { animation-delay: 0.6s; }
+
         h2 {
-            border-bottom: 2px solid var(--accent-color);
-            padding-bottom: 10px;
+            font-size: 1.4em;
+            font-weight: 500;
             margin-top: 0;
-            display: inline-block;
+            margin-bottom: 20px;
+            color: #e2e8f0;
+            display: flex;
+            align-items: center;
         }
-        
-        /* 技能标签容器 */
+
+        p {
+            color: #cbd5e1;
+            font-size: 1.05em;
+        }
+
+        /* 5. 优雅的标签设计 */
         .skills {
             display: flex;
             flex-wrap: wrap;
             gap: 12px;
-            margin-top: 15px;
         }
-        
-        /* 单个技能标签样式 */
+
         .skill-tag {
-            background: #334155;
-            color: var(--accent-color);
-            padding: 8px 16px;
-            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #e2e8f0;
+            padding: 6px 18px;
+            border-radius: 30px;
             font-size: 0.9em;
-            font-weight: bold;
-            transition: background 0.3s ease;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
         }
-        
+
         .skill-tag:hover {
-            background: #475569;
+            background: rgba(255, 255, 255, 0.15);
+            transform: scale(1.05);
         }
-        
+
+        /* 6. 链接与视频适配 */
         a {
-            color: var(--accent-color);
+            color: #38bdf8;
             text-decoration: none;
-            transition: color 0.3s ease;
+            transition: opacity 0.3s ease;
         }
-        
+
         a:hover {
-            color: #7dd3fc;
-            text-decoration: underline;
+            opacity: 0.7;
         }
-        
-        /* 定义入场动画 */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(30px); }
+
+        video {
+            width: 100%;
+            border-radius: 12px;
+            margin-top: 10px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            background: #000; /* 视频加载前显示纯黑 */
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
     </style>
@@ -114,33 +144,37 @@
 <body>
     <div class="container">
         <header>
-            <h1>你好，我是 [你的名字] 👋</h1>
-            <p class="subtitle">前端开发者 / 设计爱好者 / 终身学习者</p>
+            <h1>[你的名字]</h1>
+            <div class="subtitle">CREATIVE DEVELOPER / VISUAL THINKER</div>
         </header>
 
-        <div class="section">
-            <h2>🚀 关于我</h2>
-            <p>欢迎来到我的数字宇宙！我是一名热爱编程的开发者，致力于构建美观、高效且有意思的产品。我相信代码不仅是逻辑，也是一种表达创造力的艺术。</p>
+        <div class="glass-card">
+            <h2>关于我</h2>
+            <p>探索代码与设计的边界。我致力于用最简约的方式解决复杂的问题，构建干净、直观且充满细节的数字体验。</p>
         </div>
 
-        <div class="section">
-            <h2>💻 我的技术栈</h2>
+        <div class="glass-card">
+            <h2>作品 Demo</h2>
+            <p>最近的一个视觉交互尝试：</p>
+            <video controls>
+                <source src="demo.mp4" type="video/mp4">
+            </video>
+        </div>
+
+        <div class="glass-card">
+            <h2>技能栈</h2>
             <div class="skills">
-                <span class="skill-tag">HTML5 & CSS3</span>
+                <span class="skill-tag">Design System</span>
+                <span class="skill-tag">HTML / CSS</span>
                 <span class="skill-tag">JavaScript</span>
                 <span class="skill-tag">Python</span>
-                <span class="skill-tag">Git & GitHub</span>
-                <span class="skill-tag">UI/UX 设计</span>
             </div>
         </div>
 
-        <div class="section">
-            <h2>📫 联系我</h2>
-            <p>如果你有任何有趣的想法，或者想一起讨论技术，欢迎通过以下方式联系我：</p>
-            <ul>
-                <li>Email: <a href="mailto:your.email@example.com">your.email@example.com</a></li>
-                <li>GitHub: <a href="https://github.com/你的用户名">@你的用户名</a></li>
-            </ul>
+        <div class="glass-card">
+            <h2>取得联系</h2>
+            <p>Email: <a href="mailto:your.email@example.com">your.email@example.com</a></p>
+            <p>GitHub: <a href="https://github.com/你的用户名">@你的用户名</a></p>
         </div>
     </div>
 </body>
